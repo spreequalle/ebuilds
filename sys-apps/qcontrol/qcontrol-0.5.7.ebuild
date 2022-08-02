@@ -5,7 +5,7 @@ EAPI=7
 
 LUA_COMPAT=( lua5-1 luajit )
 
-inherit lua-single toolchain-funcs
+inherit lua-single systemd toolchain-funcs
 
 DESCRIPTION="Qcontrol is a daemon and command line tool which controls the various peripherals that are present on many embedded NAS devices."
 HOMEPAGE="https://www.hellion.org.uk/qcontrol/"
@@ -14,7 +14,7 @@ SRC_URI="https://www.hellion.org.uk/qcontrol/releases/${PV}/${P}.tar.xz"
 LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS="arm"
-IUSE=""
+IUSE="systemd"
 
 REQUIRED_USE="${LUA_REQUIRED_USE}"
 
@@ -28,6 +28,11 @@ src_install() {
 	doins examples/*.lua
 
 	newinitd "${FILESDIR}"/init.d qcontrol
+
+	if use systemd; then
+		systemd_dounit systemd/qcontrol.service
+		systemd_dounit systemd/qcontrold.{service,socket}
+	fi
 }
 
 pkg_preinst() {
