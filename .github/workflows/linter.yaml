@@ -3,7 +3,7 @@ name: Linter
 on:
   pull_request:
     branches:
-    - master
+    - main
 
 jobs:
   linting:
