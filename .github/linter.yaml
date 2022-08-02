@@ -1,0 +1,17 @@
+name: Linter
+
+on:
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: oxsecurity/megalinter/flavors/python@v6
+      env:
+        PRINT_ALPACA: false
+        VALIDATE_ALL_CODEBASE: false
