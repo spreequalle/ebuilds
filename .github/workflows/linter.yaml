@@ -3,16 +3,16 @@ name: Linter
 on:
   pull_request:
     branches:
-    - main
+      - main
 
 jobs:
   linting:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: oxsecurity/megalinter/flavors/python@v6
-      env:
-        DISABLE_LINTERS: SPELL_CSPELL # we don't want to maintain a local dictionary
-        PRINT_ALPACA: false
-        VALIDATE_ALL_CODEBASE: false
+      - uses: actions/checkout@v3
+      - uses: oxsecurity/megalinter/flavors/python@v6
+        env:
+          DISABLE_LINTERS: SPELL_CSPELL # we don't want to maintain a local dictionary
+          PRINT_ALPACA: false
+          VALIDATE_ALL_CODEBASE: false
