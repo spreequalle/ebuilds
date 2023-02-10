@@ -24,6 +24,6 @@ src_unpack() {
 }
 
 src_install() {
-        insinto /lib/firmware
-        doins mali_csffw.bin
+	insinto /lib/firmware
+	doins mali_csffw.bin
 }
