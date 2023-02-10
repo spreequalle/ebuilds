@@ -14,7 +14,7 @@ SRC_URI="https://gitlab.com/rk3588_linux/linux/libmali/-/raw/${COMMIT}/firmware/
 
 LICENSE="ARM-MALI-EULA"
 SLOT="0"
-KEYWORDS="arm64"
+KEYWORDS="~arm64"
 
 S="${WORKDIR}"
 

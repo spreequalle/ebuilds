@@ -5,4 +5,7 @@
 	<email>generik@spreequalle.de</email>
 	<name>Erik Hoppe</name>
 </maintainer>
+<upstream>	
+	<remote-id type="gitlab">rk3588_linux/linux/libmali</remote-id>
+</upstream>
 </pkgmetadata>
