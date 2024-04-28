@@ -2,25 +2,30 @@ name: check for upstream updates
 
 on:
   schedule:
-  - cron: "20 4 * * *"
+    - cron: "20 4 * * *"
 
 jobs:
   check_updates:
+
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
     strategy:
       fail-fast: false
       matrix:
         ebuild:
-        - sys-apps/qcontrol
-        - sys-firmware/panfrost-firmware
+          - sys-apps/qcontrol
+          - sys-firmware/panfrost-firmware
         include:
-        - ebuild: sys-apps/qcontrol
-          feed: https://www.hellion.org.uk/qcontrol/releases/index.atom
-        - ebuild: sys-firmware/panfrost-firmware
-          feed: https://gitlab.com/rk3588_linux/linux/libmali.atom
-    runs-on: ubuntu-latest
+          - ebuild: sys-apps/qcontrol
+            feed: https://www.hellion.org.uk/qcontrol/releases/index.atom
+          - ebuild: sys-firmware/panfrost-firmware
+            feed: https://gitlab.com/rk3588_linux/linux/libmali.atom
+
     steps:
-    - uses: guilhem/rss-issues-action@0.5.2
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        feed: ${{ matrix.feed }}
-        labels: ${{ matrix.ebuild }}
+      - uses: git-for-windows/rss-to-issues@v0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          feed: ${{ matrix.feed }}
+          labels: ${{ matrix.ebuild }}
