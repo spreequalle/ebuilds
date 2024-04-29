@@ -28,6 +28,6 @@ jobs:
     steps:
       - uses: git-for-windows/rss-to-issues@v0
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           feed: ${{ matrix.feed }}
           labels: ${{ matrix.ebuild }}
