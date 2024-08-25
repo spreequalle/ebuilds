@@ -29,7 +29,6 @@ src_prepare() {
 }
 
 src_install() {
-
 	if use systemd; then
 		systemd_dounit mcm-daemon.service
 	else
