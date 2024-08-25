@@ -1,0 +1,34 @@
+--- a/Makefile	2024-07-14 15:45:14.160000000 +0000
++++ b/Makefile	2024-07-14 15:50:50.880000000 +0000
+@@ -8,8 +8,8 @@
+ 	STRIP = $(DEB_HOST_GNU_TYPE)-strip
+ endif
+ 
+-CFLAGS += -I. -Iiniparser/src -I/usr/include
+-LIBS   +=-Liniparser -liniparser
++CFLAGS += -I. -I/usr/include/iniparser4
++LIBS   += -liniparser4
+ 
+ DEPS = mcm.h iniparser/src/iniparser.h
+ OBJ  = mcm-daemon.o
+@@ -23,19 +23,11 @@
+ %.o: %.c $(DEPS)
+ 	$(CC) -c -o $@ $< $(CFLAGS)
+ 
+-mcm-daemon: $(OBJ) iniparser/libiniparser.a
++mcm-daemon: $(OBJ)
+ 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+ 
+-iniparser/libiniparser.a: iniparser
+-	make -C iniparser CC=$(CC) AR=$(AR) STRIP=$(STRIP)
+-
+-iniparser/src/iniparser.h:
+-	git clone http://github.com/ndevilla/iniparser
+-
+ clean:
+-	make -C iniparser veryclean
+ 	rm -f *.o mcm-daemon
+-	
+ 
+ install:
+ 	$(INSTALL) -d $(ETC_DIR)
