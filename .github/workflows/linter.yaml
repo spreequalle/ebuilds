@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: oxsecurity/megalinter/flavors/python@v7
+      - uses: oxsecurity/megalinter/flavors/python@v8
         env:
           DISABLE_LINTERS: SPELL_CSPELL # we don't want to maintain a local dictionary
           PRINT_ALPACA: false
