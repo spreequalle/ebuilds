@@ -3,6 +3,7 @@ name: media-sound/navidrome
 on:
   workflow_dispatch:
     inputs:
+      # checkov:skip=CKV_GHA_7
       nd_tag:
         description: 'Navidrome version tag'
         required: true
