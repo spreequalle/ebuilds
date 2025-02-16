@@ -1,0 +1,78 @@
+name: media-sound/navidrome
+
+on:
+  workflow_dispatch:
+    inputs:
+      nd_tag:
+        description: 'Navidrome version tag'
+        required: true
+        default: 'v0.54.4'
+
+permissions: {}
+
+jobs:
+  # download and release Go/JS dependencies
+  dependencies:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # permit releases
+
+    env:
+      GO_VERSION: '>1.23'
+      JS_VERSION: '>22'
+      GO_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-godeps.tar.xz"
+      JS_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-jsdeps.tar.xz"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: navidrome/navidrome
+          ref: ${{ inputs.nd_tag }}
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.JS_VERSION }}
+
+      - name: Go
+        env:
+          GOMODCACHE: ${{ github.workspace }}/go-mod
+        run: go mod download -modcacherw -x
+
+      - name: JavaScript
+        working-directory: ui
+        run: npm ci
+
+      # navidrome uses esbuild which depends on optional (evaluated at runtime) binaries.
+      # bundle all (navidrome supported arch) to have them available during ebuild.
+      - name: JavaScript (esbuild)
+        working-directory: ui
+        run: |
+          ESBUILD_VER="$(jq -r '.packages["node_modules/esbuild"].version' package-lock.json)"
+          printf "Bundling esbuild [%s] binaries\n" "${ESBUILD_VER}"
+          npm install -f "@esbuild/darwin-arm64@${ESBUILD_VER}" \
+          "@esbuild/darwin-x64@${ESBUILD_VER}" \
+          "@esbuild/linux-arm@${ESBUILD_VER}" \
+          "@esbuild/linux-arm64@${ESBUILD_VER}" \
+          "@esbuild/linux-ia32@${ESBUILD_VER}" \
+          "@esbuild/linux-x64@${ESBUILD_VER}"
+
+      - name: Compress
+        run: |
+          printf "compress go modules...\n"
+          tar -cf- go-mod | xz -z9v > "${GO_DEP_DISTFILE}"
+          printf "compress js modules...\n"
+          tar -C ui -cf- node_modules | xz -z9v > "${JS_DEP_DISTFILE}"
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "media-sound/navidrome"
+          tag_name: "media-sound/navidrome"
+          files: |
+            ${{ env.GO_DEP_DISTFILE }}
+            ${{ env.JS_DEP_DISTFILE }}
