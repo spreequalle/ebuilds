@@ -17,9 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         ebuild:
+          - media-sound/navidrome
           - sys-apps/qcontrol
           - sys-firmware/panfrost-firmware
         include:
+          - ebuild: media-sound/navidrome
+            feed: https://github.com/navidrome/navidrome/releases.atom
           - ebuild: sys-apps/qcontrol
             feed: https://www.hellion.org.uk/qcontrol/releases/index.atom
           - ebuild: sys-firmware/panfrost-firmware
