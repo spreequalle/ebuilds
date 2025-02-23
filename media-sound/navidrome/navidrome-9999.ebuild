@@ -3,21 +3,13 @@
 
 EAPI=8
 
-inherit go-module systemd
+inherit git-r3 systemd
 
 DESCRIPTION="🎧☁️ Your Personal Streaming Service"
 HOMEPAGE="https://www.navidrome.org/"
 
-SRC_URI="
-	https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${PN}-v${PV}.tar.gz
-	https://github.com/spreequalle/ebuilds/releases/download/media-sound/navidrome/navidrome-v${PV}-godeps.tar.xz
-	https://github.com/spreequalle/ebuilds/releases/download/media-sound/navidrome/navidrome-v${PV}-jsdeps.tar.xz
-"
-
-ND_GIT_SHA=73ccfbd
-ND_GIT_TAG="${PV}"
-
-KEYWORDS="amd64 arm arm64 x86 ~arm64-macos ~x64-macos"
+EGIT_REPO_URI="https://github.com/navidrome/navidrome.git"
+RESTRICT="network-sandbox"
 
 IUSE="systemd"
 LICENSE="GPL-3"
@@ -35,22 +27,11 @@ BDEPEND="
 "
 
 src_prepare() {
-	# provide frontend deps
-	ln -sr "${WORKDIR}"/node_modules ui
-
-	# sanity checks
-	make check_go_env || die "Error validating golang environment!"
-	make check_node_env || die "Error validating nodejs environment!"
-
-	default
+	make setup || die "Failed to setup build environment"
 }
 
 src_compile() {
-	# frontend
-	make buildjs || die "Failed to build Frontend"
-
-	# backend
-	ego build -ldflags="-X github.com/navidrome/navidrome/consts.gitSha=${ND_GIT_SHA} -X github.com/navidrome/navidrome/consts.gitTag=${ND_GIT_TAG}" -tags="netgo" || die "Failed to build Backend"
+	make build || die "Failed to build"
 }
 
 src_install() {
@@ -74,6 +55,7 @@ src_install() {
 		keepdir /var/log/navidrome
 		fowners navidrome:navidrome /var/log/navidrome
 		fperms 0750 /var/log/navidrome
+
 		newinitd "${FILESDIR}"/navidrome.initd navidrome
 	fi
 }
