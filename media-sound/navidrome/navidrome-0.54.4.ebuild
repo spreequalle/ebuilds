@@ -64,16 +64,16 @@ src_install() {
 
 	insinto /etc/navidrome
 	doins release/linux/navidrome.toml
-        fowners navidrome:navidrome /etc/navidrome /etc/navidrome/navidrome.toml
-        fperms 0750 /etc/navidrome
-        fperms 0640 /etc/navidrome/navidrome.toml
+	fowners navidrome:navidrome /etc/navidrome /etc/navidrome/navidrome.toml
+	fperms 0750 /etc/navidrome
+	fperms 0640 /etc/navidrome/navidrome.toml
 
-        if use systemd; then
+	if use systemd; then
 		systemd_dounit contrib/navidrome.service
 	else
 		keepdir /var/log/navidrome
 		fowners navidrome:navidrome /var/log/navidrome
 		fperms 0750 /var/log/navidrome
 		newinitd "${FILESDIR}"/navidrome.initd navidrome
-        fi
+	fi
 }
