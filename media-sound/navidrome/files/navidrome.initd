@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+# Copyright 2024 Erik Hoppe <generik@spreequalle.de>
+# Distributed under the terms of the GNU General Public License v2
+
+NAVIDROME_USER="${NAVIDROME_USER:-"navidrome"}"
+NAVIDROME_GROUP="${NAVIDROME_GROUP:-"navidrome"}"
+
+NAVIDROME_CFG="${NAVIDROME_CFG:-"/etc/navidrome/navidrome.toml"}"
+NAVIDROME_LOG="${NAVIDROME_LOG:-"/var/log/navidrome/navidrome.log"}"
+NAVIDROME_HOME="${NAVIDROME_HOME:-"/var/lib/navidrome"}"
+
+name="navidrome"
+description="🎧☁️ Your Personal Streaming Service"
+command="/usr/bin/navidrome"
+command_args="--configfile ${NAVIDROME_CFG} ${NAVIDROME_ARGS}"
+command_user="${NAVIDROME_USER}:${NAVIDROME_GROUP}"
+command_background=1
+pidfile="/run/navidrome.pid"
+directory="${NAVIDROME_HOME}"
+output_log="${NAVIDROME_LOG}"
+error_log="${NAVIDROME_LOG}"
+
+required_files="${NAVIDROME_CFG}"
+depend() {
+	need net
+}
+
+
+start_pre() {
+	checkpath -d -o "${NAVIDROME_USER}:${NAVIDROME_GROUP}" -m750 "${NAVIDROME_HOME}" || return 1
+}
