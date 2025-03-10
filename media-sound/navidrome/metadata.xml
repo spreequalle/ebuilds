@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>generik@spreequalle.de</email>
+		<name>Erik Hoppe</name>
+	</maintainer>
+	<use>
+		<flag name="mpv">Add media-video/mpv: Media player for local playback support (Jukebox mode).</flag>
+	</use>
+	<longdescription>🎧☁️ Your Personal Streaming Service
+	</longdescription>
+	<upstream>
+		<remote-id type="github">navidrome/navidrome</remote-id>
+	</upstream>
+</pkgmetadata>
