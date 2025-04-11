@@ -1,3 +1,5 @@
+arm default/linux/arm/23.0/armv6j_hf/musl/llvm exp
+arm default/linux/arm/23.0/armv7a_hf/musl/llvm exp
 arm default/linux/arm/23.0/split-usr/armv5te/musl exp
 arm default/linux/arm/23.0/split-usr/armv6j_hf/musl/llvm exp
 arm default/linux/arm/23.0/split-usr/armv7a_hf/musl/llvm exp
