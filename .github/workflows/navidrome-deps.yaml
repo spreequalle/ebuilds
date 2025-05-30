@@ -54,13 +54,12 @@ jobs:
         working-directory: ui
         run: |
           ESBUILD_VER="$(jq -r '.packages["node_modules/esbuild"].version' package-lock.json)"
+          ESBUILD_TARGETS="darwin-x64 linux-arm linux-arm64 linux-ia32 linux-x64"
           printf "Bundling esbuild [%s] binaries\n" "${ESBUILD_VER}"
-          npm install -f "@esbuild/darwin-arm64@${ESBUILD_VER}" \
-          "@esbuild/darwin-x64@${ESBUILD_VER}" \
-          "@esbuild/linux-arm@${ESBUILD_VER}" \
-          "@esbuild/linux-arm64@${ESBUILD_VER}" \
-          "@esbuild/linux-ia32@${ESBUILD_VER}" \
-          "@esbuild/linux-x64@${ESBUILD_VER}"
+          for target in ${ESBUILD_TARGETS}; do
+            npm install -f "@esbuild/${target}@${ESBUILD_VER}"
+            file "node_modules/@esbuild/${target}/bin/esbuild"
+          done
 
       - name: Compress
         run: |
