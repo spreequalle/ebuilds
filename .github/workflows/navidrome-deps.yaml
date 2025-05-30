@@ -20,7 +20,7 @@ jobs:
 
     env:
       GO_VERSION: '>1.23'
-      JS_VERSION: '>22'
+      JS_VERSION: '22'
       GO_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-godeps.tar.xz"
       JS_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-jsdeps.tar.xz"
 
