@@ -57,7 +57,7 @@ jobs:
           ESBUILD_TARGETS="darwin-x64 linux-arm linux-arm64 linux-ia32 linux-x64"
           printf "Bundling esbuild [%s] binaries\n" "${ESBUILD_VER}"
           for target in ${ESBUILD_TARGETS}; do
-            yarn install --verbose --force "@esbuild/${target}@${ESBUILD_VER}"
+            yarn add --verbose --force "@esbuild/${target}@${ESBUILD_VER}"
             file -E "node_modules/@esbuild/${target}/bin/esbuild"
           done
 
