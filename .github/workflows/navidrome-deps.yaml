@@ -20,7 +20,7 @@ jobs:
 
     env:
       GO_VERSION: '>1.23'
-      JS_VERSION: '>22'
+      JS_VERSION: '22' # FIXME npm >10.x will refuse to install non host specific binaries
       GO_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-godeps.tar.xz"
       JS_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-jsdeps.tar.xz"
 
@@ -57,8 +57,8 @@ jobs:
           ESBUILD_TARGETS="darwin-x64 linux-arm linux-arm64 linux-ia32 linux-x64"
           printf "Bundling esbuild [%s] binaries\n" "${ESBUILD_VER}"
           for target in ${ESBUILD_TARGETS}; do
-            npm install -f "@esbuild/${target}@${ESBUILD_VER}"
-            file "node_modules/@esbuild/${target}/bin/esbuild"
+            npm install "@esbuild/${target}@${ESBUILD_VER}" --verbose --force
+            file -E "node_modules/@esbuild/${target}/bin/esbuild"
           done
 
       - name: Compress
