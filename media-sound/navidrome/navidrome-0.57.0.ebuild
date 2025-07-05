@@ -32,7 +32,7 @@ RDEPEND="
 "
 BDEPEND="
 	acct-user/navidrome
-	>=dev-lang/go-1.22.0
+	>=dev-lang/go-1.24.4
 	>=net-libs/nodejs-20.0.0[npm]
 "
 
