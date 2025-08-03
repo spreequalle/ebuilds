@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit go-module systemd
+inherit go-module systemd tmpfiles
 
 DESCRIPTION="🎧☁️ Your Personal Streaming Service"
 HOMEPAGE="https://www.navidrome.org/"
@@ -79,4 +79,10 @@ src_install() {
 		fperms 0750 /var/log/navidrome
 		newinitd "${FILESDIR}"/navidrome.initd navidrome
 	fi
+
+	newtmpfiles "${FILESDIR}"/${PN}.tmpfile ${PN}.conf
+}
+
+pkg_postinst() {
+	tmpfiles_process ${PN}.conf
 }
