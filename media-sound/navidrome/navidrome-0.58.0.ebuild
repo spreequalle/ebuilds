@@ -52,8 +52,8 @@ src_compile() {
 	make buildjs || die "Failed to build Frontend"
 
 	# backend
-	ego build -ldflags="-X github.com/navidrome/navidrome/consts.gitSha=${ND_GIT_SHA} -X github.com/navidrome/navidrome/consts.gitTag=${ND_GIT_TAG} -s -w" \
-	-tags="netgo" || die "Failed to build Backend"
+	GO_LDFLAGS="-X github.com/navidrome/navidrome/consts.gitSha=${ND_GIT_SHA} -X github.com/navidrome/navidrome/consts.gitTag=${ND_GIT_TAG}"
+	ego build -ldflags="${GO_LDFLAGS}" -tags="netgo" || die "Failed to build Backend"
 }
 
 src_install() {
