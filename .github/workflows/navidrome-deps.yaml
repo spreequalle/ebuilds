@@ -30,7 +30,7 @@ jobs:
           repository: navidrome/navidrome
           ref: ${{ inputs.nd_tag }}
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
