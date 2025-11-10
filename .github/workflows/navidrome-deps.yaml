@@ -7,7 +7,7 @@ on:
       nd_tag:
         description: 'Navidrome version tag'
         required: true
-        default: 'v0.54.4'
+        default: 'v0.58.5'
 
 permissions: {}
 
@@ -19,7 +19,7 @@ jobs:
       contents: write # permit releases
 
     env:
-      GO_VERSION: '>1.23'
+      GO_VERSION: '>1.25.4'
       JS_VERSION: '22' # FIXME npm >10.x will refuse to install non host specific binaries
       GO_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-godeps.tar.xz"
       JS_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-jsdeps.tar.xz"
