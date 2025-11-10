@@ -15,7 +15,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oxsecurity/megalinter/flavors/python@v8
         env:
           DISABLE_LINTERS: SPELL_CSPELL # we don't want to maintain a local dictionary
