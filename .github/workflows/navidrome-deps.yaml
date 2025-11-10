@@ -19,7 +19,7 @@ jobs:
       contents: write # permit releases
 
     env:
-      GO_VERSION: '>1.25.4'
+      GO_VERSION: 'stable'
       JS_VERSION: '22' # FIXME npm >10.x will refuse to install non host specific binaries
       GO_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-godeps.tar.xz"
       JS_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-jsdeps.tar.xz"
