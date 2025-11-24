@@ -30,7 +30,7 @@ jobs:
       JS_DEP_DISTFILE: "navidrome-${{ inputs.nd_tag }}-jsdeps.tar.xz"
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           repository: navidrome/navidrome
           ref: ${{ inputs.nd_tag }}
