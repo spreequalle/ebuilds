@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit go-module systemd
+inherit go-module systemd tmpfiles
 
 DESCRIPTION="🎧☁️ Your Personal Streaming Service"
 HOMEPAGE="https://www.navidrome.org/"
@@ -14,7 +14,7 @@ SRC_URI="
 	https://github.com/spreequalle/ebuilds/releases/download/media-sound/navidrome/navidrome-v${PV}-jsdeps.tar.xz
 "
 
-ND_GIT_SHA="4909232"
+ND_GIT_SHA="34c6f12"
 ND_GIT_TAG="${PV}"
 
 KEYWORDS="amd64 arm arm64 x86 ~arm64-macos ~x64-macos"
@@ -32,7 +32,7 @@ RDEPEND="
 "
 BDEPEND="
 	acct-user/navidrome
-	>=dev-lang/go-1.24.4
+	>=dev-lang/go-1.24.5
 	>=net-libs/nodejs-20.0.0[npm]
 "
 
@@ -52,8 +52,8 @@ src_compile() {
 	make buildjs || die "Failed to build Frontend"
 
 	# backend
-	ego build -ldflags="-X github.com/navidrome/navidrome/consts.gitSha=${ND_GIT_SHA} -X github.com/navidrome/navidrome/consts.gitTag=${ND_GIT_TAG} -s -w" \
-	-tags="netgo" || die "Failed to build Backend"
+	GO_LDFLAGS="-X github.com/navidrome/navidrome/consts.gitSha=${ND_GIT_SHA} -X github.com/navidrome/navidrome/consts.gitTag=${ND_GIT_TAG}"
+	ego build -ldflags="${GO_LDFLAGS}" -tags="netgo" || die "Failed to build Backend"
 }
 
 src_install() {
@@ -79,4 +79,10 @@ src_install() {
 		fperms 0750 /var/log/navidrome
 		newinitd "${FILESDIR}"/navidrome.initd navidrome
 	fi
+
+	newtmpfiles "${FILESDIR}"/${PN}.tmpfile ${PN}.conf
+}
+
+pkg_postinst() {
+	tmpfiles_process ${PN}.conf
 }
