@@ -74,7 +74,7 @@ jobs:
           tar -C ui -cf- node_modules | xz -z9v > "${JS_DEP_DISTFILE}"
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: "media-sound/navidrome"
           tag_name: "media-sound/navidrome"
