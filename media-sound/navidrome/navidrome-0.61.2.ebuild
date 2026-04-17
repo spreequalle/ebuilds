@@ -14,7 +14,7 @@ SRC_URI="
 	https://github.com/spreequalle/ebuilds/releases/download/media-sound/navidrome/navidrome-v${PV}-jsdeps.tar.xz
 "
 
-ND_GIT_SHA="34c6f12"
+ND_GIT_SHA="aa84e64"
 ND_GIT_TAG="${PV}"
 
 KEYWORDS="amd64 arm arm64 x86 ~arm64-macos ~x64-macos"
@@ -53,7 +53,7 @@ src_compile() {
 
 	# backend
 	GO_LDFLAGS="-X github.com/navidrome/navidrome/consts.gitSha=${ND_GIT_SHA} -X github.com/navidrome/navidrome/consts.gitTag=${ND_GIT_TAG}"
-	ego build -ldflags="${GO_LDFLAGS}" -tags="netgo" || die "Failed to build Backend"
+	ego build -ldflags="${GO_LDFLAGS}" -tags="netgo,sqlite_fts5" || die "Failed to build Backend"
 }
 
 src_install() {
