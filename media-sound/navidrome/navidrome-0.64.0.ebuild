@@ -1,4 +1,4 @@
-# Copyright 2024 Gentoo Authors
+# Copyright 2026 <generik@spreequalle.de>
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -14,7 +14,7 @@ SRC_URI="
 	https://github.com/spreequalle/ebuilds/releases/download/media-sound/navidrome/navidrome-v${PV}-jsdeps.tar.xz
 "
 
-ND_GIT_SHA="1b46b97"
+ND_GIT_SHA="1072e9f"
 ND_GIT_TAG="${PV}"
 
 KEYWORDS="amd64 arm arm64 x86 ~arm64-macos ~x64-macos"
@@ -26,13 +26,14 @@ SLOT="0"
 RDEPEND="
 	acct-user/navidrome
 	dev-db/sqlite
-	media-libs/taglib
+	media-libs/libwebp
 	media-video/ffmpeg
 	mpv? ( media-video/mpv )
 "
 BDEPEND="
 	acct-user/navidrome
-	>=dev-lang/go-1.26
+	>=dev-lang/go-1.27
+	static? ( arm? ( elibc_glibc? ( llvm-core/lld ) ) )
 	>=net-libs/nodejs-24.0.0[npm]
 "
 
@@ -57,9 +58,19 @@ src_compile() {
 
 	if use static; then
 		GO_LDFLAGS="${GO_LDFLAGS} -linkmode=external -extldflags '-static'"
+
 		# required on 32-bit arm (arm/v6, arm/v7) so SQLite's 64-bit atomics resolve
 		if use arm && tc-is-gcc; then
 			GO_LDFLAGS="${GO_LDFLAGS} '-latomic'"
+		fi
+
+		# GNU ld corrupts the R_ARM_IRELATIVE addends of libatomic's ifunc resolvers
+		# (wrong address, Thumb bit lost) once .text outgrows the 16MB Thumb branch
+		# range, making static arm binaries jump to garbage inside glibc's ifunc
+		# resolution and crash before main() (issue #5738). Link 32-bit arm with LLD,
+		# which emits correct addends.
+		if use arm && use elibc_glibc; then
+			GO_LDFLAGS="${GO_LDFLAGS} '-fuse-ld=lld'"
 		fi
 	fi
 
@@ -67,6 +78,7 @@ src_compile() {
 	if use arm || use x86; then
 		GO_TAGS="${GO_TAGS},nodynamic"
 	fi
+
 
 	ego build -ldflags="${GO_LDFLAGS}" -tags="${GO_TAGS}" || die "Failed to build Backend"
 }
