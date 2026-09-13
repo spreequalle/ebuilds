@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: oxsecurity/megalinter/flavors/python@v10
         env:
           DISABLE_LINTERS: SPELL_CSPELL # we don't want to maintain a local dictionary
