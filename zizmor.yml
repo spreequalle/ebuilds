@@ -1,5 +1,7 @@
+---
 rules:
   unpinned-uses:
     config:
       policies:
-        */*: ref-pin
+        actions/*: ref-pin
+        oxsecurity/*: ref-pin
