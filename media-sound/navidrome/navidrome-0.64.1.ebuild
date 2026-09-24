@@ -14,7 +14,7 @@ SRC_URI="
 	https://github.com/spreequalle/ebuilds/releases/download/media-sound/navidrome/navidrome-v${PV}-jsdeps.tar.xz
 "
 
-ND_GIT_SHA="be10f89"
+ND_GIT_SHA="285dc4f"
 ND_GIT_TAG="${PV}"
 
 KEYWORDS="amd64 arm arm64 x86 ~arm64-macos ~x64-macos"
@@ -32,7 +32,7 @@ RDEPEND="
 "
 BDEPEND="
 	acct-user/navidrome
-	>=dev-lang/go-1.26
+	>=dev-lang/go-1.27
 	static? ( arm? ( elibc_glibc? ( llvm-core/lld ) ) )
 	>=net-libs/nodejs-24.0.0[npm]
 "
